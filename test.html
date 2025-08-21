@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Simple Chatbot UI</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f8fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .chatbot-container {
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-header {
+    background: #007bff;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #e9ebf0;
+  }
+
+  .message {
+    max-width: 75%;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    line-height: 1.4;
+  }
+
+  .message.bot {
+    background: #007bff;
+    color: white;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+  }
+
+  .message.user {
+    background: #dcf8c6;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+  }
+
+  .chat-input-area {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+  }
+
+  .chat-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    font-size: 16px;
+  }
+
+  .send-btn {
+    background: #007bff;
+    border: none;
+    color: white;
+    padding: 0 20px;
+    margin-left: 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .send-btn:hover {
+    background: #0056b3;
+  }
+</style>
+</head>
+<body>
+
+<div class="chatbot-container">
+  <div class="chat-header">Chatbot</div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="message bot">Hello! How can I help you today?</div>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" id="chatInput" class="chat-input" placeholder="Type your message..." />
+    <button class="send-btn" id="sendBtn">Send</button>
+  </div>
+</div>
+
+<script>
+  const sendBtn = document.getElementById('sendBtn');
+  const chatInput = document.getElementById('chatInput');
+  const chatMessages = document.getElementById('chatMessages');
+
+  sendBtn.addEventListener('click', () => {
+    const messageText = chatInput.value.trim();
+    if (messageText === '') return;
+
+    // User message
+    const userMessage = document.createElement('div');
+    userMessage.classList.add('message', 'user');
+    userMessage.textContent = messageText;
+    chatMessages.appendChild(userMessage);
+
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    chatInput.value = '';
+
+    // Bot reply (simple echo for demo)
+    setTimeout(() => {
+      const botMessage = document.createElement('div');
+      botMessage.classList.add('message', 'bot');
+      botMessage.textContent = `You said: "${messageText}"`;
+      chatMessages.appendChild(botMessage);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 800);
+  });
+
+  // Optional: Allow Enter key to send message
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      sendBtn.click();
+    }
+  });
+</script>
+
+</body>
+</html>
